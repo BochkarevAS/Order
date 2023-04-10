@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Мои покупки{% endblock %}
+
+{% block seo %}
+    <meta name="description" content="Что нибуть для СЕО"/>
+    <meta property="og:title" content="Что нибуть для СЕО"/>
+    <meta property="og:description" content="Что нибуть для СЕО"/>
+{% endblock %}
+
+{% block body %}
+
+    <div class="container">
+
+        <h2>Заказы ({{ orders.getTotalItemCount }})</h2>
+
+        <div>
+            {% if orders %}
+                {% for order in orders %}
+                    <div>
+                        <div class="pr-inner-box">
+                            <div class="pr-name">
+                                <a href="{{ path('order_show', {'id': order.id}) }}">
+                                    Заказ №: {{ order.id }}
+                                </a>
+                            </div>
+                        </div>
+
+                        {% if order.quantity %}
+                            <div class="pr-inner">
+                                <div class="pr-inner-header">Кол-во:</div>
+                                <div class="pr-inner-box">{{ order.quantity }}</div>
+                            </div>
+                        {% endif %}
+
+                        {% if order.price %}
+                            <div class="pr-inner">
+                                <div class="pr-inner-header">Сумма:</div>
+                                <div class="pr-inner-box">{{ order.price }}</div>
+                            </div>
+                        {% endif %}
+
+                        {% if order.createdAt %}
+                            <div class="pr-inner">
+                                <div class="pr-inner-header">Дата создания:</div>
+                                <div class="pr-inner-box">{{ order.createdAt|date('d-m-Y') }}</div>
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+
+        {{ knp_pagination_render(orders, 'widget/_pagination.html.twig') }}
+    </div>
+
+{% endblock %}

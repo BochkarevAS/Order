@@ -1,0 +1,48 @@
+version: '3'
+
+services:
+  nginx:
+    build: ./.docker/nginx
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - .:/var/www
+    depends_on:
+      - php-fpm
+    environment:
+      COMPOSE_CONVERT_WINDOWS_PATHS: 1
+
+  php-fpm:
+    build: ./.docker/php-fpm
+    restart: always
+    volumes:
+      - .:/var/www
+    depends_on:
+      - db
+    environment:
+      COMPOSE_CONVERT_WINDOWS_PATHS: 1
+      DATABASE_URL: postgresql://postgres:main@db:5432/orders
+
+  db:
+    image: postgres:12-alpine
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: main
+      POSTGRES_DB: orders
+    ports: [ 5432 ]
+    labels:
+      com.symfony.server.service-prefix: 'DATABASE'
+
+  pgadmin:
+    image: dpage/pgadmin4
+    restart: always
+    depends_on:
+      - db
+    ports:
+      - "5555:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: pgadmin4@pgadmin.org
+      PGADMIN_DEFAULT_PASSWORD: admin

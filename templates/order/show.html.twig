@@ -1,0 +1,78 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Мои покупки{% endblock %}
+
+{% block seo %}
+    <meta name="description" content="Что нибуть для СЕО"/>
+    <meta property="og:title" content="Что нибуть для СЕО"/>
+    <meta property="og:description" content="Что нибуть для СЕО"/>
+{% endblock %}
+
+{% block body %}
+
+    <div class="container">
+
+        <h2>Заказ №: {{ id }}</h2>
+
+        <div class="prlist-show">
+            <div class="prlist-list">
+                {% if orders %}
+                    {% for order in orders %}
+
+                        <div class="prlist-item">
+                            <div class="pr-content">
+
+                                <div class="pr-inner-content">
+                                    <div class="pr-inner pr-inner__header">
+                                        <div class="pr-inner-box">
+                                            <div class="pr-name">
+                                                    <span class="pr-name__text">
+                                                        {{ order.name }}
+                                                    </span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {% if order.code %}
+                                        <div class="pr-inner">
+                                            <div class="pr-inner-header">Код:</div>
+                                            <div class="pr-inner-box">{{ order.code }}</div>
+                                        </div>
+                                    {% endif %}
+
+                                    {% if order.quantity %}
+                                        <div class="pr-inner">
+                                            <div class="pr-inner-header">Кол-во:</div>
+                                            <div class="pr-inner-box">{{ order.quantity }}</div>
+                                        </div>
+                                    {% endif %}
+
+                                    {% if order.price %}
+                                        <div class="pr-inner">
+                                            <div class="pr-inner-header">Сумма:</div>
+                                            <div class="pr-inner-box">{{ order.price }}</div>
+                                        </div>
+                                    {% endif %}
+
+                                    {% if order.createdAt %}
+                                        <div class="pr-inner">
+                                            <div class="pr-inner-header">Дата создания:</div>
+                                            <div class="pr-inner-box">{{ order.createdAt|date('d-m-Y') }}</div>
+                                        </div>
+                                    {% endif %}
+                                </div>
+
+                            </div>
+                            <div class="pr-footer">
+                                <div class="pr-footer-note">
+                                    {{ order.info }}
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
